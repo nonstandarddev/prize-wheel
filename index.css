@@ -22,4 +22,40 @@ body {
     height: 900px;
     width: 700px;
     margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#wheel {
+    height: 400px;
+    width: 400px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+@keyframes spin {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+.rotating {
+    animation: 1s linear infinite spin;
+}
+
+#spin {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    background-color: rgb(209, 105, 36);
+    color: white;
+}
+
+#spin:hover {
+    transform: scale(1.1);
+    background-color: rgb(206, 143, 101);
 }
