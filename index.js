@@ -1,16 +1,18 @@
 /*
     1: Constants & helpers
 */
-const LOADING = 0, READY = 1, ERROR = 2;
 
 /* 
     2: State
     
     NB: may be defined in one or more variables
 */
-let state = { 
-    rotating: false
- };
+let state = {
+  rotation: {
+    count: 0,
+    position: null
+  }
+};
 
 /* 
     3: State Manipulation (Accessors)
@@ -19,10 +21,15 @@ let state = {
 */
 
 // Setters
-let setRotating = () => !state.rotating;
+let setRotationCount = () => state.rotation.count += 1;
+let setRotationEndState = () => {
+    const end = Math.floor(Math.random() * 360) + "deg";
+    state.rotation.position = end;
+}
 
 // Getters
-let isRotating = () => state.rotating;
+let isRotated = () => state.rotation.count > 0;
+let getRotationEndState = () => state.rotation.position;
 
 /*
     4: DOM References
@@ -32,15 +39,16 @@ let isRotating = () => state.rotating;
 let D = document;
 
 // DOM nodes (individual)
-let $wheel = D.getElementById('wheel');
-let $spin = D.getElementById('spin');
+let $wheel = D.getElementById("wheel");
+let $spin = D.getElementById("spin");
 
 /* 
     5: DOM Updates (i.e. logic for 'modifying' the DOM in certain detailed ways)
 */
 
-let toggleWheel = () => {
-  $wheel.classList.toggle('rotating');
+let spinWheel = () => {
+  $wheel.classList.toggle("rotating");
+  $wheel.style.setProperty("--random-end-state", getRotationEndState());
 };
 
 /*
@@ -50,8 +58,11 @@ let toggleWheel = () => {
 */
 
 let onSpin = () => {
-    setRotating();
-    toggleWheel();
+  // Update state
+  setRotationCount();
+  setRotationEndState();
+  // Update DOM
+  spinWheel();
 };
 
 /*

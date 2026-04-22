@@ -8,10 +8,11 @@
   margin: 0;
   padding: 0;
   border: 1px dashed #555; /* NB: for debugging purposes */
-} 
+}
 
 body {
-  font-family: "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+  font-family:
+    "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background-color: var(--default-bg-color);
   color: var(--default-font-color);
@@ -19,43 +20,61 @@ body {
 }
 
 #root {
-    height: 900px;
-    width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+  height: 900px;
+  width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 #wheel {
-    height: 400px;
-    width: 400px;
-    border-radius: 50%;
-    text-align: center;
+  height: 400px;
+  width: 400px;
+  border-radius: 50%;
+  text-align: center;
 }
 
 @keyframes spin {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slowdown {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(var(--random-end-state));
+  }
 }
 
 .rotating {
-    animation: 1s linear infinite spin;
+  animation-duration: 1s, 3s;
+  animation-delay: 0s, 5s;
+  animation-name: spin, slowdown;
+  animation-fill-mode: none, forwards;
+  animation-iteration-count: 5, 1;
+  animation-timing-function: linear, ease-out;
 }
 
 #spin {
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    background-color: rgb(209, 105, 36);
-    color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  background-color: rgb(230, 133, 68);
+  color: white;
 }
 
 #spin:hover {
-    transform: scale(1.1);
-    background-color: rgb(206, 143, 101);
+  transform: scale(1.1);
+  background-color: rgb(255, 191, 148);
 }
