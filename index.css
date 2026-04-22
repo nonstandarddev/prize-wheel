@@ -1,0 +1,25 @@
+:root {
+  --default-bg-color: #fff6ef;
+  --default-font-color: #ad0040ff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 1px dashed #555; /* NB: for debugging purposes */
+} 
+
+body {
+  font-family: "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: var(--default-bg-color);
+  color: var(--default-font-color);
+  height: 100vh;
+}
+
+#root {
+    height: 900px;
+    width: 700px;
+    margin: 20px auto;
+}
