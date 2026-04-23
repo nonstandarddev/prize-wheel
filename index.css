@@ -1,13 +1,14 @@
 :root {
   --default-bg-color: #fff6ef;
-  --default-font-color: #ad0040ff;
+  --default-conic-1: #ad0040ff;
+  --default-conic-2: #e77ba3;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border: 1px dashed #555; /* NB: for debugging purposes */
+  /* border: 1px dashed #555; /* NB: for debugging purposes */
 }
 
 body {
@@ -15,8 +16,11 @@ body {
     "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background-color: var(--default-bg-color);
-  color: var(--default-font-color);
   height: 100vh;
+}
+
+li {
+  list-style: none;
 }
 
 #root {
@@ -28,15 +32,63 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 50px;
 }
 
-#wheel {
-  height: 400px;
-  width: 400px;
-  border-radius: 50%;
+.wheel-container {
+  height: 50%;
+  width: 75%;
+}
+
+.wheel-ticker {
+  margin: 0 auto;
+  font-size: 40px;
   text-align: center;
 }
+
+.wheel {
+  display: grid;
+  place-items: center;
+}
+
+.wheel li {
+  /* Instance Variables */
+  --radius: 200px;
+  --weight: calc(attr(data-percentage type(<number>)) / 100);
+  --percentage: calc(attr(data-percentage type(<number>)) * 1%);
+  --bg-color: attr(data-color type(<color>));
+  --offset: calc(360deg * var(--accum) / 100);
+  /* 
+    NB: to explain the below, for each segment, grab the midpoint of its angle then account 
+    for the offset and the fact that 'conic-gradient()' begins from the top, not the right
+  */
+  --theta: calc((360deg * var(--weight)) / 2 + var(--offset) - 90deg);
+  --pos-x: calc(cos(var(--theta)) * (var(--radius) * 0.60));
+  --pos-y: calc(sin(var(--theta)) * (var(--radius) * 0.60));
+  /* Computed Variables */
+  width: calc(var(--radius) * 2); /* i.e. diameter */
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--offset),
+    var(--bg-color) 0% var(--percentage),
+    transparent var(--percentage) 100%
+  );
+  /*
+    NB: the following rules 'super-impose' each segment on top of one another
+  */
+  grid-row: 1;
+  grid-column: 1;
+  display: grid;
+  place-items: center;
+}
+
+.wheel li > strong {
+  color: white;
+  transform: translateX(var(--pos-x)) translateY(var(--pos-y));
+}
+
+
 
 @keyframes spin {
   from {
@@ -65,8 +117,9 @@ body {
   animation-timing-function: linear, ease-out;
 }
 
-#spin {
-  padding: 10px 20px;
+.spin {
+  padding: 20px 40px;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -74,7 +127,7 @@ body {
   color: white;
 }
 
-#spin:hover {
+.spin:hover {
   transform: scale(1.1);
   background-color: rgb(255, 191, 148);
 }

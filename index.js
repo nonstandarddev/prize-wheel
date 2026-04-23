@@ -23,9 +23,13 @@ let state = {
 // Setters
 let setRotationCount = () => state.rotation.count += 1;
 let setRotationEndState = () => {
-    const end = Math.floor(Math.random() * 360) + "deg";
-    state.rotation.position = end;
-}
+    if (state.rotation.position !== 0) {
+        const end = Math.floor(Math.random() * 360) + "deg";
+        state.rotation.position = end;
+    } else {
+        state.rotation.position = "0deg";
+    };
+};
 
 // Getters
 let isRotated = () => state.rotation.count > 0;
@@ -39,16 +43,24 @@ let getRotationEndState = () => state.rotation.position;
 let D = document;
 
 // DOM nodes (individual)
-let $wheel = D.getElementById("wheel");
-let $spin = D.getElementById("spin");
+let $wheel = D.querySelector(".wheel-container");
+let $whole = D.querySelector(".wheel");
+let $spin = D.querySelector(".spin");
+let $segments = document.querySelectorAll(".wheel li");
+
+let accum = 0;
+$segments.forEach((segment) => {
+  segment.style.setProperty("--accum", accum);
+  accum += parseFloat(segment.getAttribute("data-percentage"));
+});
 
 /* 
     5: DOM Updates (i.e. logic for 'modifying' the DOM in certain detailed ways)
 */
 
 let spinWheel = () => {
-  $wheel.classList.toggle("rotating");
-  $wheel.style.setProperty("--random-end-state", getRotationEndState());
+  $whole.classList.toggle("rotating");
+  $whole.style.setProperty("--random-end-state", getRotationEndState());
 };
 
 /*
@@ -69,3 +81,8 @@ let onSpin = () => {
     7: Event Bindings
 */
 $spin.onclick = () => onSpin();
+
+/* 
+    8: Initialisation
+*/
+
