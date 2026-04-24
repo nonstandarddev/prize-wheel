@@ -1,6 +1,24 @@
 /*
     1: Constants & helpers
 */
+const OPTIONS = [
+    'Option 1',
+    'Option 2',
+    'Option 3',
+    'Option 4'
+];
+
+const initOptionMapping = () => {
+
+    const step = (360 / OPTIONS.length);
+
+    const mapping = new Map();
+    OPTIONS.forEach((option, i) => {
+        mapping.set([i * step, (i + 1) * step], option)
+    });
+
+    return mapping;
+};
 
 /* 
     2: State
@@ -9,8 +27,8 @@
 */
 let state = {
   rotation: {
-    count: 0,
-    position: null
+    position: "0deg",
+    mapping: initOptionMapping()
   }
 };
 
@@ -21,46 +39,52 @@ let state = {
 */
 
 // Setters
-let setRotationCount = () => state.rotation.count += 1;
-let setRotationEndState = () => {
-    if (state.rotation.position !== 0) {
+let setRotationPosition = () => {
+
+    if (state.rotation.position === "0deg") {
         const end = Math.floor(Math.random() * 360) + "deg";
         state.rotation.position = end;
     } else {
         state.rotation.position = "0deg";
     };
+    
 };
 
 // Getters
-let isRotated = () => state.rotation.count > 0;
-let getRotationEndState = () => state.rotation.position;
+let getRotationPosition = () => state.rotation.position;
 
 /*
     4: DOM References
 
 */
 
-let D = document;
-
-// DOM nodes (individual)
-let $wheel = D.querySelector(".wheel-container");
-let $whole = D.querySelector(".wheel");
-let $spin = D.querySelector(".spin");
-let $segments = document.querySelectorAll(".wheel li");
-
-let accum = 0;
-$segments.forEach((segment) => {
-  segment.style.setProperty("--accum", accum);
-  accum += parseFloat(segment.getAttribute("data-percentage"));
-});
+const DOM = {
+    wheel: document.querySelector(".wheel"),
+    segments: document.querySelectorAll(".wheel li"),
+    spin: document.querySelector(".spin")
+};
 
 /* 
     5: DOM Updates (i.e. logic for 'modifying' the DOM in certain detailed ways)
 */
 
-let spinWheel = () => {
-  $whole.classList.toggle("rotating");
-  $whole.style.setProperty("--random-end-state", getRotationEndState());
+const spinWheel = () => {
+
+  // Apply `.rotating` class to trigger CSS animation
+  DOM.wheel.classList.toggle("rotating");
+
+  // Set CSS variables `--random-end-state` to stop the wheel at a 'random' orientation
+  const endState = getRotationPosition();
+  DOM.wheel.style.setProperty("--random-end-state", endState);
+
+};
+
+const initView = () => {
+  let accum = 0;
+  DOM.segments.forEach((segment) => {
+    segment.style.setProperty("--accum", accum);
+    accum += parseFloat(segment.getAttribute("data-percentage"));
+  });
 };
 
 /*
@@ -69,20 +93,26 @@ let spinWheel = () => {
     NB: these are called by event listeners that listen to DOM (and other events e.g. WebSockets)
 */
 
-let onSpin = () => {
+const onSpin = () => {
+
   // Update state
-  setRotationCount();
-  setRotationEndState();
+  setRotationPosition();
+
   // Update DOM
   spinWheel();
+
+};
+
+const onLoad = () => {
+
 };
 
 /*
     7: Event Bindings
 */
-$spin.onclick = () => onSpin();
+DOM.spin.onclick = () => onSpin();
 
 /* 
     8: Initialisation
 */
-
+initView();
