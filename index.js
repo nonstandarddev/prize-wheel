@@ -1,23 +1,17 @@
 /*
     1: Constants & helpers
 */
-const OPTIONS = [
-    'Option 1',
-    'Option 2',
-    'Option 3',
-    'Option 4'
-];
+const OPTIONS = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 const initOptionMapping = () => {
+  const step = 360 / OPTIONS.length;
 
-    const step = (360 / OPTIONS.length);
+  const mapping = new Map();
+  OPTIONS.forEach((option, i) => {
+    mapping.set([i * step, (i + 1) * step], option);
+  });
 
-    const mapping = new Map();
-    OPTIONS.forEach((option, i) => {
-        mapping.set([i * step, (i + 1) * step], option)
-    });
-
-    return mapping;
+  return mapping;
 };
 
 /* 
@@ -28,8 +22,8 @@ const initOptionMapping = () => {
 let state = {
   rotation: {
     position: "0deg",
-    mapping: initOptionMapping()
-  }
+    mapping: initOptionMapping(),
+  },
 };
 
 /* 
@@ -40,14 +34,12 @@ let state = {
 
 // Setters
 let setRotationPosition = () => {
-
-    if (state.rotation.position === "0deg") {
-        const end = Math.floor(Math.random() * 360) + "deg";
-        state.rotation.position = end;
-    } else {
-        state.rotation.position = "0deg";
-    };
-    
+  if (state.rotation.position === "0deg") {
+    const end = Math.floor(Math.random() * 360) + "deg";
+    state.rotation.position = end;
+  } else {
+    state.rotation.position = "0deg";
+  }
 };
 
 // Getters
@@ -59,9 +51,9 @@ let getRotationPosition = () => state.rotation.position;
 */
 
 const DOM = {
-    wheel: document.querySelector(".wheel"),
-    segments: document.querySelectorAll(".wheel li"),
-    spin: document.querySelector(".spin")
+  wheel: document.querySelector(".wheel"),
+  segments: document.querySelectorAll(".wheel li"),
+  spin: document.querySelector(".spin"),
 };
 
 /* 
@@ -69,14 +61,12 @@ const DOM = {
 */
 
 const spinWheel = () => {
-
   // Apply `.rotating` class to trigger CSS animation
   DOM.wheel.classList.toggle("rotating");
 
   // Set CSS variables `--random-end-state` to stop the wheel at a 'random' orientation
   const endState = getRotationPosition();
   DOM.wheel.style.setProperty("--random-end-state", endState);
-
 };
 
 const initView = () => {
@@ -94,18 +84,14 @@ const initView = () => {
 */
 
 const onSpin = () => {
-
   // Update state
   setRotationPosition();
 
   // Update DOM
   spinWheel();
-
 };
 
-const onLoad = () => {
-
-};
+const onLoad = () => {};
 
 /*
     7: Event Bindings
