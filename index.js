@@ -11,6 +11,9 @@ const OPTIONS = [
   "Bad Luck"
 ];
 const OPTION_COLOURS = ["#ad0040ff", "#e77ba3"];
+
+// Helpers
+
 const STEP_PCT = (1 / OPTIONS.length) * 100;
 const STEP_DEG = 360 / OPTIONS.length;
 const OPTION_MAPPING = () => {
