@@ -8,11 +8,7 @@ const OPTIONS = [
   "10% Off",
   "It's Free!",
   "Not Your Day",
-  "Bad Luck",
-  "No Luck",
-  "No Prize",
-  "Jog On",
-  "No Prize",
+  "Bad Luck"
 ];
 const OPTION_COLOURS = ["#ad0040ff", "#e77ba3"];
 const STEP_PCT = (1 / OPTIONS.length) * 100;
