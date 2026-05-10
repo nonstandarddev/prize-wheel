@@ -1,5 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Basic&display=swap");
+
 :root {
   --default-bg-color: #fff6ef;
+  --font-anton: "Anton", Impact, sans-serif;
+  --font-basic: "Basic", Arial, sans-serif;
+  --font-bodini: "Bodini 72", "Bodoni 72", "Bodoni MT", Didot, serif;
+  --font-gadugi: "Gadugi", "Segoe UI", Arial, sans-serif;
+  --font-default:
+    "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --active-font: var(--font-gadugi);
 }
 
 * {
@@ -10,9 +20,7 @@
 }
 
 body {
-  font-family:
-    "Quicksand", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: var(--active-font);
   background-color: var(--default-bg-color);
   height: 100vh;
 }
@@ -116,26 +124,53 @@ li {
 }
 
 .message {
-  min-height: 24px;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.35);
   opacity: 0;
-  transform: scale(0.8);
-  transition:
-    opacity 1.5s ease,
-    transform 3s ease;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.message-card {
+  width: min(420px, 100%);
+  padding: 32px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transform: scale(0.75);
+  transition: transform 1.5s ease;
 }
 
 .message.flash {
   opacity: 1;
-  transform: scale(2);
+  pointer-events: auto;
 }
 
-.message > .result {
+.message.flash .message-card {
+  transform: scale(1);
+}
+
+.message .result {
   color: #ad0040ff;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.message .action {
+  font-size: 18px;
 }
 
 .spin {
   padding: 20px 40px;
+  font-family: var(--active-font);
+  font-size: 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;

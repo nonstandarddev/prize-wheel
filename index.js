@@ -17,7 +17,7 @@ const OPTION_CONFIG = {
   "No Luck": 0,
   "No Prize": 0,
   "Jog On": 0,
-  "Oh": 0
+  "Oh Dear": 0
 };
 const OPTIONS = Object.keys(OPTION_CONFIG);
 const OPTION_COLOURS = ["#ad0040ff", "#e77ba3"];
@@ -46,6 +46,7 @@ const state = {
     position: 0,
     ranges: OPTION_MAPPING(),
   },
+  messageTimerId: null,
 };
 
 /* 
@@ -108,17 +109,28 @@ const spinWheel = (endState) => {
 };
 
 const flash = (endResult, delay = MSG_DELAY_MS) => {
+  clearTimeout(state.messageTimerId);
   DOM.messageResult.textContent = "";
   DOM.messageAction.textContent = "";
   DOM.message.classList.remove("flash");
+  DOM.message.setAttribute("aria-hidden", "true");
 
-  setTimeout(() => {
+  state.messageTimerId = setTimeout(() => {
     const prize = OPTION_CONFIG[endResult];
     DOM.messageAction.textContent = prize ? "Collect your prize at stand C100!" : "Better luck next time!";
     DOM.messageResult.textContent = endResult;
+    DOM.message.setAttribute("aria-hidden", "false");
     DOM.message.classList.add("flash");
   }, delay)
 }; 
+
+const resetMessage = () => {
+  clearTimeout(state.messageTimerId);
+  DOM.message.classList.remove("flash");
+  DOM.message.setAttribute("aria-hidden", "true");
+  DOM.messageResult.textContent = "";
+  DOM.messageAction.textContent = "";
+};
 
 const initView = () => {
   let accum = 0;
@@ -164,6 +176,7 @@ const onSpin = () => {
     7: Event Bindings
 */
 DOM.spin.onclick = () => onSpin();
+DOM.message.onclick = () => resetMessage();
 
 /* 
     8: Initialisation
