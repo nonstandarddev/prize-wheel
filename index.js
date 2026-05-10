@@ -2,15 +2,26 @@
     1: Constants & helpers
 */
 
+/*
+  - If they win, they can claim now or later (?) -> there will be a button; if they click
+  'Claim Now' then they go to C100
+*/
+
 // Constants
 
-const OPTIONS = [
-  "10% Off",
-  "It's Free!",
-  "Not Your Day",
-  "Bad Luck"
-];
+const OPTION_CONFIG = {
+  "It's Free!": 1,
+  "Not Your Day": 0,
+  "Bad Luck": 0,
+  "10% Off": 1,
+  "No Luck": 0,
+  "No Prize": 0,
+  "Jog On": 0,
+  "Oh": 0
+};
+const OPTIONS = Object.keys(OPTION_CONFIG);
 const OPTION_COLOURS = ["#ad0040ff", "#e77ba3"];
+const MSG_DELAY_MS = 8100;
 
 // Helpers
 
@@ -79,6 +90,9 @@ const getRotationResult = (endState) => {
 const DOM = {
   wheel: document.querySelector(".wheel"),
   spin: document.querySelector(".spin"),
+  message: document.querySelector(".message"),
+  messageResult: document.querySelector(".result"),
+  messageAction: document.querySelector(".action")
 };
 
 /* 
@@ -92,6 +106,19 @@ const spinWheel = (endState) => {
   // Set CSS variables `--random-end-state` to stop the wheel at a 'random' orientation
   DOM.wheel.style.setProperty("--random-end-state", endState + "deg");
 };
+
+const flash = (endResult, delay = MSG_DELAY_MS) => {
+  DOM.messageResult.textContent = "";
+  DOM.messageAction.textContent = "";
+  DOM.message.classList.remove("flash");
+
+  setTimeout(() => {
+    const prize = OPTION_CONFIG[endResult];
+    DOM.messageAction.textContent = prize ? "Collect your prize at stand C100!" : "Better luck next time!";
+    DOM.messageResult.textContent = endResult;
+    DOM.message.classList.add("flash");
+  }, delay)
+}; 
 
 const initView = () => {
   let accum = 0;
@@ -121,13 +148,16 @@ const initView = () => {
 */
 
 const onSpin = () => {
+
   // Update state
   setRotationPosition();
   const endState = getRotationPosition();
+  const endResult = getRotationResult(endState);
+
   // Update DOM
   spinWheel(endState);
-  const endResult = getRotationResult(endState);
-  console.log(endResult);
+  flash(endResult);
+
 };
 
 /*

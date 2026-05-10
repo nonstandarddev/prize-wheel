@@ -115,6 +115,25 @@ li {
   animation-timing-function: linear, ease-out;
 }
 
+.message {
+  min-height: 24px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 1.5s ease,
+    transform 3s ease;
+  text-align: center;
+}
+
+.message.flash {
+  opacity: 1;
+  transform: scale(2);
+}
+
+.message > .result {
+  color: #ad0040ff;
+}
+
 .spin {
   padding: 20px 40px;
   border: none;
